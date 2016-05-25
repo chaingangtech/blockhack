@@ -8,9 +8,9 @@ const Ripple = require('ripple-lib')
 
 // Create a server with a host and port
 const server = new Hapi.Server();
-server.connection({ 
-    host: 'localhost', 
-    port: 8000 
+server.connection({
+    host: 'localhost',
+    port: 8000
 });
 
 server.register([{
@@ -43,17 +43,17 @@ server.route({
       index: false
     }
   }
-})
+});
 
 server.route({
   method: 'GET',
   path: '/',
   handler: function (request, reply) {
     var path = request.url.path.replace(/^\/|\/$/g, '') // remove leading and trailing slashes from the string
-    reply.view('index', { title: 'The Invested Researcher | BlockHack 2016',
-    path: path, index: 'index content goes here' })
+    reply.view('main', { title: 'The Invested Researcher | BlockHack 2016',
+    path: path })
   }
-})
+});
 
 
 server.route({
@@ -62,9 +62,9 @@ server.route({
   handler: function (request, reply) {
     var path = request.url.path.replace(/^\/|\/$/g, '') // remove leading and trailing slashes from the string
     reply.view('main', { title: 'The Invested Researcher | BlockHack 2016',
-    path: path, main: 'index content goes here' })
+    path: path })
   }
-})
+});
 
 server.route({
   method: 'GET',
@@ -72,7 +72,7 @@ server.route({
   handler: function (request, reply) {
     var path = request.url.path.replace(/^\/|\/$/g, '') // remove leading and trailing slashes from the string
     reply.view('search', { title: 'The Invested Researcher | BlockHack 2016',
-    path: path, search: 'index content goes here' })
+    path: path })
   }
 });
 
@@ -82,7 +82,7 @@ server.route({
   handler: function (request, reply) {
     var path = request.url.path.replace(/^\/|\/$/g, '') // remove leading and trailing slashes from the string
     reply.view('invest', { title: 'The Invested Researcher | BlockHack 2016',
-    path: path, invest: 'index content goes here' })
+    path: path })
   }
 });
 
@@ -93,21 +93,9 @@ server.route({
   handler: function (request, reply) {
     var path = request.url.path.replace(/^\/|\/$/g, '') // remove leading and trailing slashes from the string
     reply.view('cancerResearch', { title: 'The Invested Researcher | BlockHack 2016',
-    path: path, cancerResearch: 'index content goes here' })
+    path: path })
   }
 });
-
-
-// Add the route
-server.route({
-    method: 'GET',
-    path:'/hello', 
-    handler: function (request, reply) {
-
-        return reply('hello world');
-    }
-});
-
 
 
 // Start the server
