@@ -4,7 +4,7 @@ const path = require('path')
 const Hapi = require('hapi');
 const Vision = require('vision')
 const Inert = require('inert')
-const Ripple = require('ripple-lib')
+const Ripple = require('./ripple.js')
 
 // Create a server with a host and port
 const server = new Hapi.Server();
@@ -109,6 +109,7 @@ server.route({
 
 server.route({
   method: 'GET',
+<<<<<<< HEAD
   path: '/investor',
   handler: function (request, reply) {
     var path = request.url.path.replace(/^\/|\/$/g, '') // remove leading and trailing slashes from the string
@@ -118,6 +119,19 @@ server.route({
 });
 
 
+=======
+  path: '/lcr',
+  handler: function (request, reply) {
+    var account_id = rsrTVFtfuS9BAbUYknHAtM399bg8bPpwzt
+    var path = request.url.path.replace(/^\/|\/$/g, '') // remove leading and trailing slashes from the string
+    Ripple.getBalances(account_id).then(function (balances) {
+      reply.view('lcr', { title: 'Ripple Connect Manager | Hapi v' + request.server.version,
+      path: path, balances: (balances) })
+    })
+  }
+});
+
+>>>>>>> 2301bb1d99b6a412f400f356652bd0c3694c12f0
 server.route({
   method: 'GET',
   path: '/signup',
