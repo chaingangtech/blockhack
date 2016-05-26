@@ -90,3 +90,9 @@ body {
     background-position: center;
     vertical-align: middle;
 }
+
+.navbar {
+    float: right;
+    margin-top: 0px;
+    font-family: 'Open Sans';
+}
