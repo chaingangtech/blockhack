@@ -74,6 +74,8 @@ body {
 .cover{
     color: rgb(255, 255, 255);
     position: relative;
+    height: auto;
+    min-height: 350px;
     background: url("/static/img/research_2.jpg") scroll 0px 100% / cover transparent;
     background-repeat: no-repeat;
     background-attachment: fixed;
