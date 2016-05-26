@@ -37,7 +37,7 @@ body {
     position: relative;
     height: 100%;
     overflow-y: auto;
-    padding: 0 15px;
+    padding: 0px;
 }
 @media (max-width: 992px) {
     body {
@@ -69,4 +69,11 @@ body {
     padding:10px;
     border-top: 1px solid gray;
     text-align: center;
+}
+
+.cover{
+    color: rgb(255, 255, 255);
+    position: relative;
+    min-height: 350px;
+    background: url("/static/img/research_2.jpg") no-repeat scroll 0px 100% / cover transparent;
 }
