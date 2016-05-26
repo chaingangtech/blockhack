@@ -1,0 +1,262 @@
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css" rel="stylesheet" type="text/css">
+  </head><body>
+    <div class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="section">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h1>Investor Profile</h1>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="section">
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-3 text-center">
+                            <img src="static\img\johndoe2.jpg" class="img-circle img-responsive">
+                          </div>
+                          <div class="col-md-3">
+                            <h1 class="text-center">
+                              <br>
+                              <b>3&nbsp;
+                                <br>Projects</b>
+                            </h1>
+                          </div>
+                          <div class="col-md-3">
+                            <h1 class="text-center text-primary">
+                              <br>
+                              <b>$ 15,000
+                                <br>invested</b>
+                            </h1>
+                          </div>
+                          <div class="col-md-3">
+                            <h1 class="text-center text-success">
+                              <br>
+                              <b>$500
+                                <br>donated</b>
+                            </h1>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9"><div w3-include-html="inc_chart.html"></div></div>
+          <div class="col-md-3"><div w3-include-html="inc_graph.html"></div></div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <hr>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <h1 class="text-center">Projects Invested</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="row">
+              <div class="col-md-12 bg-primary">
+                <br>
+                <h4>
+                  <b>$10,000 invested - RIPPLE THIS</b>
+                </h4>
+              </div>
+              <div class="col-md-12">
+                <a><img src="static\img\lung_research.jpg" class="img-responsive img-rounded"></a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <h3>Lung Cancer Research</h3>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisici elit,&nbsp;</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <a href="#"><img src="static\img\janesmith2.jpg" class="img-circle img-responsive"></a>
+              </div>
+              <div class="col-md-9">
+                <p class="text-left">
+                  <b>Jane Doe</b>
+                  <br>PhD, University of NSW</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p class="text-left">
+                  <b>Phase:</b>&nbsp;Seed</p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-right">
+                  <b>Goal:</b>&nbsp;$100,000</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="progress">
+                  <div class="progress-bar" role="progressbar" style="width: 100%;">100% Complete</div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <img src="static\img\graph.jpg" class="img-responsive">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="col-md-12 bg-primary">
+              <br>
+              <h4>
+                <b>$15,000 invested - RIPPLE THIS</b>
+              </h4>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <a><img src="static\img\photo-gauche-for-rech1.png" class="img-responsive img-rounded"></a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <h3>Heart Transplant Research</h3>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisici elit,&nbsp;</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <a href="#"><img src="static\img\janesmith2.jpg" class="img-circle img-responsive"></a>
+              </div>
+              <div class="col-md-9">
+                <p class="text-left">
+                  <b>Jane Doe</b>
+                  <br>PhD, University of NSW</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p class="text-left">
+                  <b>Phase:</b>&nbsp;Seed</p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-right">
+                  <b>Goal:</b>&nbsp;$100,000</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="progress">
+                  <div class="progress-bar" style="width: 60%">
+                    <span class="sr-only">35% Complete (success)</span>60%</div>
+                  <div class="progress-bar progress-bar-success" style="width: 20%">
+                    <span class="sr-only">20% Complete (warning)</span>20%</div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <img src="static\img\graph.jpg" class="img-responsive">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="row">
+              <div class="col-md-12 bg-success">
+                <br>
+                <h4>
+                  <b>$500 Donated - RIPPLE THIS</b>
+                </h4>
+              </div>
+              <div class="col-md-12">
+                <a><img src="static\img\slide-2.jpg" class="img-responsive img-rounded"></a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <h3>Palative Care Research</h3>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisici elit,&nbsp;</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <a href="#"><img src="static\img\janesmith2.jpg" class="img-circle img-responsive"></a>
+              </div>
+              <div class="col-md-9">
+                <p class="text-left">
+                  <b>Jane Doe</b>
+                  <br>PhD, University of NSW</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p class="text-left">
+                  <b>Phase:</b>&nbsp;Seed</p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-right">
+                  <b>Goal:</b>&nbsp;$100,000</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="progress">
+                  <div class="progress-bar" role="progressbar" style="width: 75%;">75% Complete</div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <img src="static\img\graph.jpg" class="img-responsive">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+
+</body></html>
