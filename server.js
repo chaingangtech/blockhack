@@ -4,7 +4,7 @@ const path = require('path')
 const Hapi = require('hapi');
 const Vision = require('vision')
 const Inert = require('inert')
-// const Ripple = require('./ripple.js')
+const Ripple = require('./ripple.js')
 
 // Create a server with a host and port
 const server = new Hapi.Server();
@@ -114,6 +114,19 @@ server.route({
     var path = request.url.path.replace(/^\/|\/$/g, '') // remove leading and trailing slashes from the string
     reply.view('investor', { title: 'The Invested Researcher | BlockHack 2016',
     path: path })
+  }
+});
+
+server.route({
+  method: 'GET',
+  path: '/lcr',
+  handler: function (request, reply) {
+    var account_id = 'rsrTVFtfuS9BAbUYknHAtM399bg8bPpwzt'
+    var path = request.url.path.replace(/^\/|\/$/g, '') // remove leading and trailing slashes from the string
+    db.getBalances(account_id).then(function (balances) {
+      reply.view('lcr', { title: 'The Invested Researcher | BlockHack 2016',
+      path: path, balances: (balances) })
+    })
   }
 });
 
