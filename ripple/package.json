@@ -1,0 +1,9 @@
+{
+  "name": "ripple_utils",
+  "dependencies": {
+    "bluebird": "^3.3.4",
+    "ripple-lib": "^0.17.1",
+    "fs": "^0.0.2",
+    "http": "^0.0.0"
+  }
+}
