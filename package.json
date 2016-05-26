@@ -4,6 +4,7 @@
   "description": "hapijs instance",
   "main": "index.js",
   "dependencies": {
+    "bluebird": "^3.4.0",
     "bootstrap": "^3.3.6",
     "font-awesome": "^4.6.1",
     "handlebars": "^4.0.5",
@@ -11,6 +12,7 @@
     "hapi-mongodb": "^6.0.0",
     "hoek": "^4.0.0",
     "inert": "^4.0.0",
+    "retry-bluebird": "^0.1.1",
     "ripple-lib": "^0.17.1",
     "vision": "^4.1.0"
   },
