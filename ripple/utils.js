@@ -4,6 +4,43 @@ var util_entities = require("./util_entities.js");
 var util_funcs = require("./util_funcs.js");
 var ripple_data = require("./ripple_data.js");
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ACTOR FUNCTIONS
+// Note: * indicates function has not been implemented
+//
+// PLATFORM
+//  - create_project : setup and allocate units for a specific research project (would include appropriate vetting)
+//  - *authorise_access_project : authorise an investor to access a project for investment (would include specific vetting)
+//
+// BANK
+//  - *authorise_funds_account : accept the account request from the investor (with appropriate identity checks)
+//  - fund_investor : allocates funds to an investor on the platform
+//
+// RESEARCHER
+//  - set_domain : set the URL for the profile of the specific researcher
+//  - get_project_balances : get the details of unit holdings for a specific project
+//  - offer_project : set a price for primary market of a project
+//  - delete_offers : removes all offers of sale for units in a primary market of a project
+//
+// INVESTOR
+//  - get_domain : retrieves the URL for the profile of a researcher
+//  - setup_funds_account : setup platform account with bank
+//  - get_investor_balances : provides the monetary and research equity positions of the investor
+//  - get_project_details : retrieve the details (description, website URL & hash) for a specific project
+//  - offer_project : set a price for secondary market for a project
+//  - delete_offers : removes all offers of sale for units in a secondary market for a project
+//  - get_orders : retrieves details of the current primary and secondary markets for a project
+//  - access_project : provide a connection for investment to a specific project
+//  - get_project_purchase : get amount of units in a project (primary or secondary market) which can be purchased with a given amount of funds 
+//  - get_project_price : get funds cost of specific number of units investment in a project (primary or secondary market)
+//  - purchase_project_source : invest a specific amount of funds in a project (primary or secondary market)
+//  - purchase_project_dest : invest a specific amount of units in a project (primary or secondary market)
+// 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 //Promise.longStackTraces = true;
 
 var utils = function() {
@@ -53,7 +90,7 @@ utils.prototype.setup_funds_account = function(investor, currency, limit) {
 // GENERAL ENTITY sFUNCTIONS
 //////////////////////////////
 
-utils.prototype.get_balances = function(investor) {
+utils.prototype.get_investor_balances = function(investor) {
 	var platform_pkey = this.funcs.entities.resolve("Platform");
 	return this.funcs.get_balances(investor,null,null)
 		.then(function(balances) {
@@ -72,7 +109,7 @@ utils.prototype.get_balances = function(investor) {
 // PROJECT FUNCTIONS
 //////////////////////////////
 
-utils.prototype.create_project = function(addr, code, description, site) {
+utils.prototype.create_project = function(addr, code, description, site, hash) {
 	var memos = [
 		{
 			"type": "description",
@@ -80,9 +117,14 @@ utils.prototype.create_project = function(addr, code, description, site) {
       		"data": description
       	},
 		{
-			"type": "information",
+			"type": "prospectus",
       		"format": "plain/text",
       		"data": site
+      	},
+		{
+			"type": "hash",
+      		"format": "plain/text",
+      		"data": hash
       	}
 	];
 	return this.funcs.create_trustline(addr, "Platform", code, 100, 100, false, memos);
@@ -101,7 +143,8 @@ utils.prototype.get_project_details = function(code) {
 						ret[ccy] = {};
 						transactions[i].specification.memos.forEach((memo) => {
 							if(memo.type == "description") ret[ccy]["description"]	 = memo.data;
-							if(memo.type == "information") ret[ccy].project_site = memo.data;
+							if(memo.type == "prospectus") ret[ccy].project_site = memo.data;
+							if(memo.type == "hash") ret[ccy].site_hash = memo.data;
 						});
 						ret[ccy].researcher_pkey = transactions[i].specification.destination.address;
 					}

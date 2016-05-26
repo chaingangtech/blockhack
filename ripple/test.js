@@ -28,7 +28,7 @@ utils.init()
 	//	return utils.purchase_project_dest("Inv1", "ZK1", 2, "AUD", 250);
 	//})
 	.then(() => {
-		return utils.get_balances("Inv1");
+		return utils.get_investor_balances("Inv1");
 	})
 	.then((balances) => {
 		console.log(JSON.stringify(balances));
@@ -59,7 +59,7 @@ utils.init()
 		return utils.fund_investor("Inv1", "AUD", 5000);
 	})
 	.then(() => {
-		return utils.get_balances("Inv1");
+		return utils.get_investor_balances("Inv1");
 	})
 	.then((balances) => {
 		console.log(JSON.stringify(balances))
@@ -77,7 +77,7 @@ utils.init()
 	// TEST - CREATE PROJECT
 	/*
 	.then(() => {
-		return utils.create_project("Res1", "ZK1", "Zika Virus Investigation", "http://www.awesomeresearcher.com/Zika");
+		return utils.create_project("Res1", "ZK1", "Zika Virus Investigation", "http://www.awesomeresearcher.com/Zika", "AABBCCDD12345678");
 	})
 	.then(() => {
 		return utils.get_project_details();
