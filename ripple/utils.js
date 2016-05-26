@@ -23,7 +23,7 @@ utils.prototype.close = function() {
 
 
 //////////////////////////////
-// Entity Domains
+// Entity Administration
 //////////////////////////////
 
 utils.prototype.get_domain = function(addr) {
@@ -45,8 +45,31 @@ utils.prototype.set_domain = function(addr, domain) {
 	});
 }
 
+utils.prototype.setup_funds_account = function(investor, currency, limit) {
+	return this.funcs.create_trustline(investor, "Bank", currency, limit, 0, false);
+}
+
 //////////////////////////////
-// Create Research Project
+// GENERAL ENTITY sFUNCTIONS
+//////////////////////////////
+
+utils.prototype.get_balances = function(investor) {
+	var platform_pkey = this.funcs.entities.resolve("Platform");
+	return this.funcs.get_balances(investor,null,null)
+		.then(function(balances) {
+			var ret = {funds : [], investments : []};
+			balances[0].balances.forEach(function(balance) {
+				if(balance.currency != "XRP") {
+					if(balance.counterparty == platform_pkey) ret.investments.push({investment : balance.currency, holding : balance.value});
+					else ret.funds.push({currency : balance.currency, balance : balance.value});
+				}
+			}.bind(this));
+			return ret;
+		}.bind(this));
+}
+
+//////////////////////////////
+// PROJECT FUNCTIONS
 //////////////////////////////
 
 utils.prototype.create_project = function(addr, code, description, site) {
@@ -88,5 +111,80 @@ utils.prototype.get_project_details = function(code) {
 			return ret;
 		});		
 }
+
+
+
+utils.prototype.get_project_balances = function(code) {
+	return this.funcs.get_balances("Platform",code,null)
+		.then(function(balances) {
+			var ret = {};
+			balances[0].balances.forEach(function(balance) {
+				if(balance.currency != "XRP") {
+					if(ret[balance.currency] == null) ret[balance.currency] = [];
+					var ent = this.funcs.entities.lookup(balance.counterparty);
+					ret[balance.currency].push({holder : ent, pkey : balance.counterparty, balance : -1*balance.value});
+				}
+			}.bind(this));
+			return ret;
+		}.bind(this));
+}
+
+
+//////////////////////////////
+// MARKET FUNCTIONS
+//////////////////////////////
+
+utils.prototype.offer_project = function(owner, code, amount, price, currency) {
+	return this.funcs.create_order(owner, "sell", "Platform", code, amount, "Bank", currency, amount*price);
+}
+
+utils.prototype.delete_offers = function(owner, code) {
+	return this.funcs.delete_allorders(owner, (order) => (order.specification.quantity.currency != code));
+}
+
+utils.prototype.get_orders = function(code, currency) {
+	return this.funcs.get_orders("Platform", code, "Platform", currency, "Bank");
+}
+
+
+//////////////////////////////
+// INVESTOR FUNCTIONS
+//////////////////////////////
+
+utils.prototype.fund_investor = function(investor, currency, amount) {
+	return this.funcs.make_basic_payment("Bank", investor, currency, amount);
+}
+
+utils.prototype.access_project = function(investor, code) {
+	return this.funcs.create_trustline(investor, "Platform", code, 100, 0, false);
+}
+
+utils.prototype.get_project_purchase = function(investor, code, currency, amount) {
+	return this.funcs.get_paths_source(investor, currency, investor, code, amount)
+		.then((paths) => {
+			return parseFloat(paths[0].destination.minAmount.value);
+		})
+}
+
+utils.prototype.get_project_price = function(investor, code, currency, amount) {
+	return this.funcs.get_paths_dest(investor, currency, investor, code, amount)
+		.then((paths) => {
+			var ret = [];
+			paths.forEach((path) => {
+				ret.push({currency : path.source.maxAmount.currency, amount : path.source.maxAmount.value})
+			})
+			return ret;
+		})
+}
+
+utils.prototype.purchase_project_source = function(investor, code, currency, amount, minAmount) {
+	return this.funcs.make_payment_source(investor, currency, "Bank", amount, investor, code, "Platform", minAmount);
+}
+
+utils.prototype.purchase_project_dest = function(investor, code, amount, currency, maxAmount) {
+	return this.funcs.make_payment_dest(investor, currency, "Bank", maxAmount, investor, code, "Platform", amount);
+}
+
+
 
 module.exports = utils;
