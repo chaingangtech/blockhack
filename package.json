@@ -8,6 +8,7 @@
     "font-awesome": "^4.6.1",
     "handlebars": "^4.0.5",
     "hapi": "^13.4.0",
+    "hapi-mongodb": "^6.0.0",
     "hoek": "^4.0.0",
     "inert": "^4.0.0",
     "ripple-lib": "^0.17.1",
