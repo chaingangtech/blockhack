@@ -50,7 +50,7 @@ server.route({
   path: '/',
   handler: function (request, reply) {
     var path = request.url.path.replace(/^\/|\/$/g, '') // remove leading and trailing slashes from the string
-    reply.view('main', { title: 'The Invested Researcher | BlockHack 2016',
+    reply.view('index', { title: 'The Invested Researcher | BlockHack 2016',
     path: path })
   }
 });
