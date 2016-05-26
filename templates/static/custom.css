@@ -11,6 +11,9 @@ body {
     to   { opacity: 1; }
 }
 
+.blk {
+  color: #000000;
+}
 
 body {
     padding-top: 50px;
@@ -75,4 +78,3 @@ body {
     border-top: 1px solid gray;
     text-align: center;
 }
-
