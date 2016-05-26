@@ -257,6 +257,61 @@ util_funcs.prototype.get_accountinfo = function(entitySet) {
 	}.bind(this));
 }
 
+util_funcs.prototype.get_balances = function(entities, currency, counterparty) {
+	//var arrEnt = this.entities.get_entities(entitySet);
+	var arrEnt = this.entity_param(entities);
+	return Promise.map(arrEnt, function(ent) {
+		var p = this.entities.resolve(ent);
+		var options = {};
+		if(currency != null) options.currency = currency;
+		if(counterparty != null) {
+			counterparty_pkey = this.entities.resolve(counterparty);
+			options.counterparty = counterparty_pkey;
+		}
+		return this.api.getBalances(p, options).then((balances) => {
+			return {entity : ent, pkey : p, balances : balances};
+		});
+	}.bind(this));
+}
+
+util_funcs.prototype.get_orders = function(pov_entity, base_currency, base_issuer, counter_currency, counter_issuer) {
+	var pov_pkey = this.entities.resolve(pov_entity);
+	var base_pkey = this.entities.resolve(base_issuer);
+	var counter_pkey = this.entities.resolve(counter_issuer);
+	return this.api.getOrderbook(pov_pkey, {base : {currency : base_currency, counterparty : base_pkey}, counter : {currency : counter_currency, counterparty : counter_pkey}});
+}
+
+util_funcs.prototype.get_paths_source = function(source_entity, source_currency, dest_entity, dest_currency, amount) {
+	var source_pkey = this.entities.resolve(source_entity);
+	var dest_pkey = this.entities.resolve(dest_entity);
+	return this.api.getPaths({
+      source: {
+        address: source_pkey,
+        amount: {
+          currency: source_currency, value : amount.toString()
+        }
+      },
+      destination: {
+        address: dest_pkey,
+        amount: {currency: dest_currency}
+      }
+    });
+}
+
+util_funcs.prototype.get_paths_dest = function(source_entity, source_currency, dest_entity, dest_currency, amount) {
+	var source_pkey = this.entities.resolve(source_entity);
+	var dest_pkey = this.entities.resolve(dest_entity);
+	return this.api.getPaths({
+      source: {
+        address: source_pkey
+      },
+      destination: {
+        address: dest_pkey,
+        amount: {currency: dest_currency, value : amount.toString()}
+      }
+    });
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Core Functions - Write / Transaction Processing
@@ -427,6 +482,52 @@ util_funcs.prototype.create_trustline = function(fromEntity, toEntity, currency,
 }
 
 
+util_funcs.prototype.create_order = function(makerEntity, direction, baseEntity, baseCurrency, baseAmount, priceEntity, priceCurrency, priceAmount) {
+	
+	var makerBase = this.entities.resolveBase(makerEntity);
+	var basePkey, pricePkey
+	if(baseCurrency != "XRP") basePkey = this.entities.resolve(baseEntity);
+	if(priceCurrency != "XRP") pricePkey = this.entities.resolve(priceEntity);
+	
+	var rate = Promise.resolve(0);
+
+	var factor = 1.0;
+	var baseCurrency_new = baseCurrency;
+	var priceCurrency_new = priceCurrency;
+	if(baseAmount == null || priceAmount == null) {
+		if(baseAmount == null && priceAmount == null) baseAmount = this.config.default_order_base;
+		if(baseCurrency == "XRP") {
+			factor = factor*this.config.default_USDXRP_rate;
+			baseCurrency_new = "USD";
+		}
+		if(priceCurrency == "XRP") {
+			factor = factor/this.config.default_USDXRP_rate;
+			priceCurrency_new = "USD";
+		}
+		rate = rates.getRate(baseCurrency_new, priceCurrency_new).then(function(data) {
+			// default - use spread of 10 bps
+			var assumed_rate = data.price*factor;
+			if(direction == "buy") assumed_rate = assumed_rate * (1+this.config.default_order_spread/100.0);
+			else assumed_rate = assumed_rate / (1+this.config.default_order_spread/100.0);
+			this.log("Trxn Narration", "Info", util.format("Taking assumed %s%s rate of %d based on Yahoo data %s", baseCurrency, priceCurrency, assumed_rate, JSON.stringify(data)));
+			if(baseAmount == null) baseAmount = (priceAmount * assumed_rate).toFixed(2);
+			if(priceAmount == null) priceAmount = (baseAmount / assumed_rate).toFixed(2);
+			return assumed_rate;
+		}.bind(this));
+	}
+
+	return rate.then(function(res) {
+		// TO DO - fix description for XRP (no counterparty)
+		var sDescription = util.format("address %s (direction=%s base=%d %s @ %s, price=%d %s @ %s)", makerBase.public, direction, baseAmount, baseCurrency, basePkey, priceAmount, priceCurrency, pricePkey);
+		var o = {direction : direction, quantity: {currency: baseCurrency, counterparty: basePkey, value: baseAmount.toString()}, totalPrice: {currency: priceCurrency, counterparty : pricePkey, value: priceAmount.toString()}};
+		return this.api.prepareOrder(makerBase.public,o,this.get_trxn_instructions(makerBase.public))
+			.then(function(prepared) {
+				return this.sign_submit_trxn(prepared, makerBase.secret, util.format("Order creation for %s", sDescription));
+			}.bind(this));
+	}.bind(this));
+}
+
+
 
 util_funcs.prototype.update_accountsettings = function(entity, funcSettings) {
 	if(funcSettings == null) throw Error("Update Account Settings called with no update function")
@@ -456,6 +557,94 @@ util_funcs.prototype.update_accountsettings = function(entity, funcSettings) {
 				this.log("Trxn Narration", "Error", util.format("Error encountered updating account settings for %s\n%s", pkey,err));
 			}.bind(this));
 	}.bind(this));
+}
+
+
+util_funcs.prototype.make_basic_payment = function(fromEntity, toEntity, currency, amount, memos) {
+	var fromBase = this.entities.resolveBase(fromEntity);
+	var toBase = this.entities.resolveBase(toEntity);
+	var sDescription = util.format("address %s (counterparty=%s, currency=%s, amount=%d)", fromBase.public, toBase.public, currency, amount);
+	var payment = {
+	  source: {
+	    address: fromBase.public,
+	    maxAmount: {
+	      value: amount.toString(),
+	      currency: currency
+	    }
+	  },
+	  destination: {
+	    address: toBase.public,
+	    amount: {
+	      value: amount.toString(),
+	      currency: currency
+	    }
+	  }
+	};
+	if(memos != null) payment.memos = memos;
+	return this.api.preparePayment(fromBase.public, payment, this.get_trxn_instructions(fromBase.public))
+		.then(function(prepared) {
+			return this.sign_submit_trxn(prepared, fromBase.secret, util.format("Executing payment for %s", sDescription));
+		}.bind(this))
+}
+
+util_funcs.prototype.make_payment_source = function(sourceEntity, sourceCurrency, sourceIssuer, sourceAmount, destEntity, destCurrency, destIssuer, destMinAmount) {
+	var sourceBase = this.entities.resolveBase(sourceEntity);
+	var destBase = this.entities.resolveBase(destEntity);
+	var sourceIssuerPkey = this.entities.resolve(sourceIssuer);
+	var destIssuerPkey = this.entities.resolve(destIssuer);
+	var sDescription = util.format("address %s (destination=%s [%s], source_currency=%s, source_amount=%d)", sourceBase.public, destBase.public, destCurrency, sourceCurrency, sourceAmount);
+	var payment = {
+	  source: {
+	    address: sourceBase.public,
+	    amount: {
+	      value: sourceAmount.toString(),
+	      currency: sourceCurrency,
+	      counterparty : sourceIssuerPkey
+	    }
+	  },
+	  destination: {
+	    address: destBase.public,
+	    minAmount: {
+	      currency: destCurrency,
+	      counterparty : destIssuerPkey
+	    }
+	  }
+	};
+	if(destMinAmount != null) payment.destination.minAmount.value = destMinAmount.toString();
+	return this.api.preparePayment(sourceBase.public, payment, this.get_trxn_instructions(sourceBase.public))
+		.then(function(prepared) {
+			return this.sign_submit_trxn(prepared, sourceBase.secret, util.format("Executing payment for %s", sDescription));
+		}.bind(this))
+}
+
+util_funcs.prototype.make_payment_dest = function(sourceEntity, sourceCurrency, sourceIssuer, sourceMaxAmount, destEntity, destCurrency, destIssuer, destAmount) {
+	var sourceBase = this.entities.resolveBase(sourceEntity);
+	var destBase = this.entities.resolveBase(destEntity);
+	var sourceIssuerPkey = this.entities.resolve(sourceIssuer);
+	var destIssuerPkey = this.entities.resolve(destIssuer);
+	var sDescription = util.format("address %s (destination=%s [%d %s], source_currency=%s)", sourceBase.public, destBase.public, destAmount, destCurrency, sourceCurrency);
+	var payment = {
+	  source: {
+	    address: sourceBase.public,
+	    maxAmount: {
+	      currency: sourceCurrency,
+	      counterparty : sourceIssuerPkey
+	    }
+	  },
+	  destination: {
+	    address: destBase.public,
+	    amount: {
+	      value: destAmount.toString(),
+	      currency: destCurrency,
+	      counterparty : destIssuerPkey
+	    }
+	  }
+	};
+	if(sourceMaxAmount != null) payment.source.maxAmount.value = sourceMaxAmount.toString();
+	return this.api.preparePayment(sourceBase.public, payment, this.get_trxn_instructions(sourceBase.public))
+		.then(function(prepared) {
+			return this.sign_submit_trxn(prepared, sourceBase.secret, util.format("Executing payment for %s", sDescription));
+		}.bind(this))
 }
 
 
