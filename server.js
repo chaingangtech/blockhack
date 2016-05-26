@@ -109,6 +109,17 @@ server.route({
 
 server.route({
   method: 'GET',
+  path: '/investor',
+  handler: function (request, reply) {
+    var path = request.url.path.replace(/^\/|\/$/g, '') // remove leading and trailing slashes from the string
+    reply.view('investor', { title: 'The Invested Researcher | BlockHack 2016',
+    path: path })
+  }
+});
+
+
+server.route({
+  method: 'GET',
   path: '/signup',
   handler: function (request, reply) {
     var path = request.url.path.replace(/^\/|\/$/g, '') // remove leading and trailing slashes from the string
