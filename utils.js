@@ -19,6 +19,7 @@ var ripple_data = require("./ripple_data.js");
 //
 // RESEARCHER
 //  - set_domain : set the URL for the profile of the specific researcher
+//  - setup_funds_account : setup platform account with bank
 //  - get_project_balances : get the details of unit holdings for a specific project
 //  - offer_project : set a price for primary market of a project
 //  - delete_offers : removes all offers of sale for units in a primary market of a project
@@ -38,8 +39,6 @@ var ripple_data = require("./ripple_data.js");
 //  - purchase_project_dest : invest a specific amount of units in a project (primary or secondary market)
 // 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
 //Promise.longStackTraces = true;
 
@@ -181,12 +180,26 @@ utils.prototype.offer_project = function(owner, code, amount, price, currency) {
 	return this.funcs.create_order(owner, "sell", "Platform", code, amount, "Bank", currency, amount*price);
 }
 
+utils.prototype.bid_project = function(owner, code, amount, price, currency) {
+	return this.funcs.create_order(owner, "buy", "Platform", code, amount, "Bank", currency, amount*price);
+}
+
 utils.prototype.delete_offers = function(owner, code) {
 	return this.funcs.delete_allorders(owner, (order) => (order.specification.quantity.currency != code));
 }
 
 utils.prototype.get_orders = function(code, currency) {
-	return this.funcs.get_orders("Platform", code, "Platform", currency, "Bank");
+	return this.funcs.get_orders("Platform", code, "Platform", currency, "Bank")
+		.then((orders) => {
+			var ret = {bids : [], asks : []};
+			orders.asks.forEach((ask) => {
+				ret.asks.push({units : ask.specification.quantity.value, total_price : ask.specification.totalPrice.value, exchange_rate : ask.properties.makerExchangeRate});
+			});
+			orders.bids.forEach((bid) => {
+				ret.bids.push({units : bid.specification.quantity.value, total_price : bid.specification.totalPrice.value, exchange_rate : 1.0/bid.properties.makerExchangeRate});
+			});
+			return ret;
+		})
 }
 
 
