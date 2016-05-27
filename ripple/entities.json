@@ -1,8 +1,8 @@
 {
 	"project" : {
 		"Platform"  : {"public" : "rUQaDry4ErhQsMYTTtdPWvVswf4Wbx5nEL", "secret": "shHwJrrzfW5ZgyyggbNRFjcPxfMgQ", "name" : "Invested Researcher Platform"},
-		"Bank" : {"public" : "rGUTS1kytCo1vdjaqZvXBVgbVeFv2pSTGv", "secret": "shgjfY6wLrLoWzezaGeJ21MBRfMKj", "name" : "Bank"},
-		"Inv1" : {"public" : "rwobsZzBnQvJtWzTXujo8f5L2wxHywXAHo", "secret": "snUJyVyybHssXeRX8xRoL1e9NoK7x", "name" : "Investor 1"},
-		"Res1" : {"public" : "rsrTVFtfuS9BAbUYknHAtM399bg8bPpwzt", "secret": "sh7MSiGETi5c4jJsxrwuaJ9RWnymj", "name" : "Researcher 1"}
+		"Bank"      : {"public" : "rGUTS1kytCo1vdjaqZvXBVgbVeFv2pSTGv", "secret": "shgjfY6wLrLoWzezaGeJ21MBRfMKj", "name" : "Bank"},
+		"Inv1"      : {"public" : "rwobsZzBnQvJtWzTXujo8f5L2wxHywXAHo", "secret": "snUJyVyybHssXeRX8xRoL1e9NoK7x", "name" : "Investor 1"},
+		"Res1"      : {"public" : "rsrTVFtfuS9BAbUYknHAtM399bg8bPpwzt", "secret": "sh7MSiGETi5c4jJsxrwuaJ9RWnymj", "name" : "Researcher 1"}
 	}
 }
