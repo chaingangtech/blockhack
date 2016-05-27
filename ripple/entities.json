@@ -3,6 +3,10 @@
 		"Platform"  : {"public" : "rUQaDry4ErhQsMYTTtdPWvVswf4Wbx5nEL", "secret": "shHwJrrzfW5ZgyyggbNRFjcPxfMgQ", "name" : "Invested Researcher Platform"},
 		"Bank"      : {"public" : "rGUTS1kytCo1vdjaqZvXBVgbVeFv2pSTGv", "secret": "shgjfY6wLrLoWzezaGeJ21MBRfMKj", "name" : "Bank"},
 		"Inv1"      : {"public" : "rwobsZzBnQvJtWzTXujo8f5L2wxHywXAHo", "secret": "snUJyVyybHssXeRX8xRoL1e9NoK7x", "name" : "Investor 1"},
-		"Res1"      : {"public" : "rsrTVFtfuS9BAbUYknHAtM399bg8bPpwzt", "secret": "sh7MSiGETi5c4jJsxrwuaJ9RWnymj", "name" : "Researcher 1"}
+		"Inv2"      : {"public" : "rBDRL7u5XeXj6LM2kJ7B1hC3EgLdaKCBnu", "secret": "ssZDDMh65h7sbQuN6V5PFDEscLXtH", "name" : "Investor 2"},
+		"Inv3"      : {"public" : "rfur1MB5RWSc9B5knVdoz7E2Jrmukd1Jiv", "secret": "snoKAuQqWxQ7ZS72EkfS1L53ZbLNn", "name" : "Investor 3"},
+		"Res1"      : {"public" : "rsrTVFtfuS9BAbUYknHAtM399bg8bPpwzt", "secret": "sh7MSiGETi5c4jJsxrwuaJ9RWnymj", "name" : "Researcher 1"},
+		"Res2"      : {"public" : "rUHJUA9nSh6VjSBxYVEynWsocm7ucZN5G4", "secret": "ssimSfgRJDmdzfGMFtD1syewg59av", "name" : "Researcher 2"},
+		"Res3"      : {"public" : "rhQsuj3uhi14fi1UyVqLyQzHMCBsA2e2BZ", "secret": "ssX1Amv1D5nZaVAPS65FNozBND3eU", "name" : "Researcher 3"}
 	}
 }
