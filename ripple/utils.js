@@ -180,6 +180,10 @@ utils.prototype.offer_project = function(owner, code, amount, price, currency) {
 	return this.funcs.create_order(owner, "sell", "Platform", code, amount, "Bank", currency, amount*price);
 }
 
+utils.prototype.bid_project = function(owner, code, amount, price, currency) {
+	return this.funcs.create_order(owner, "buy", "Platform", code, amount, "Bank", currency, amount*price);
+}
+
 utils.prototype.delete_offers = function(owner, code) {
 	return this.funcs.delete_allorders(owner, (order) => (order.specification.quantity.currency != code));
 }
@@ -192,7 +196,7 @@ utils.prototype.get_orders = function(code, currency) {
 				ret.asks.push({units : ask.specification.quantity.value, total_price : ask.specification.totalPrice.value, exchange_rate : ask.properties.makerExchangeRate});
 			});
 			orders.bids.forEach((bid) => {
-				ret.asks.push({units : ask.specification.quantity.value, total_price : ask.specification.totalPrice.value, exchange_rate : bid.properties.makerExchangeRate});
+				ret.bids.push({units : bid.specification.quantity.value, total_price : bid.specification.totalPrice.value, exchange_rate : 1.0/bid.properties.makerExchangeRate});
 			});
 			return ret;
 		})
