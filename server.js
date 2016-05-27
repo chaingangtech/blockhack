@@ -4,8 +4,8 @@ const path = require('path')
 const Hapi = require('hapi');
 const Vision = require('vision')
 const Inert = require('inert')
-const utils = require('./ripple/utils.js')
-var ripple = new utils()
+const utils = require('./utils.js')
+const ripple = new utils()
 
 // Create a server with a host and port
 const server = new Hapi.Server();
@@ -112,9 +112,14 @@ server.route({
   method: 'GET',
   path: '/investor',
   handler: function (request, reply) {
-    var path = request.url.path.replace(/^\/|\/$/g, '') // remove leading and trailing slashes from the string
-    reply.view('investor', { title: 'The Invested Researcher | BlockHack 2016',
-    path: path })
+    ripple.get_investor_balances('Inv1')
+      .then((balances) => {
+        var i1fb = balances.funds[0].balance
+        var i1fh = balances.investments[0].holding
+        var path = request.url.path.replace(/^\/|\/$/g, '') // remove leading and trailing slashes from the string
+        reply.view('investor', { title: 'The Invested Researcher | BlockHack 2016',
+        path: path, balances: balances, i1fb: i1fb, i1fh: i1fh })
+      });
   }
 });
 
@@ -153,10 +158,63 @@ server.route({
 
 
 // Start the server
-server.start((err) => {
+ripple.init()
+.then(() => {
+  server.start((err) => {
 
-    if (err) {
-        throw err;
-    }
-    console.log('Server running at:', server.info.uri);
-});
+      if (err) {
+          throw err;
+      }
+      console.log('Server running at:', server.info.uri);
+  });
+})
+
+
+ripple.init()
+.then(() => {
+  ripple.get_investor_balances('Inv1').then(function (balances) {
+    // console.log(balances)
+    console.log(balances)
+    console.log(balances)
+    var i1fb = balances.funds[0].balance
+    var i1fh = balances.investments[0].holding
+    console.log(i1fb)
+    console.log(i1fh)
+  })
+})
+.then(() => {
+  ripple.get_investor_balances('Inv2').then(function (balances) {
+    // console.log(balances)
+    console.log(balances)
+    console.log(balances)
+    var i2fb = balances.funds[0].balance
+    console.log(i2fb)
+  })
+})
+.then(() => {
+  ripple.get_investor_balances('Inv3').then(function (balances) {
+    // console.log(balances)
+    console.log(balances)
+    console.log(balances)
+    var i3fb = balances.funds[0].balance
+    console.log(i3fb)
+  })
+})
+// .then(() => {
+//   ripple.get_project_balances('Res1').then(function (balances) {
+//     console.log(balances)
+//     console.log(balances.funds)
+//   })
+// })
+// .then(() => {
+//   ripple.get_project_balances('Res2').then(function (balances) {
+//     console.log(balances)
+//     console.log(balances.funds)
+//   })
+// })
+// .then(() => {
+//   ripple.get_project_balances('Res3').then(function (balances) {
+//     console.log(balances)
+//     console.log(balances.funds)
+//   })
+// })

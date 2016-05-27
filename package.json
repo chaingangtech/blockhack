@@ -1,34 +1,9 @@
 {
-  "name": "blockhack",
-  "version": "1.0.0",
-  "description": "hapijs instance",
-  "main": "index.js",
+  "name": "ripple_utils",
   "dependencies": {
-    "bluebird": "^3.4.0",
-    "bootstrap": "^3.3.6",
-    "font-awesome": "^4.6.1",
-    "handlebars": "^4.0.5",
-    "hapi": "^13.4.0",
-    "hapi-mongodb": "^6.0.0",
-    "hoek": "^4.0.0",
-    "inert": "^4.0.0",
-    "retry-bluebird": "^0.1.1",
+    "bluebird": "^3.3.4",
     "ripple-lib": "^0.17.1",
-    "vision": "^4.1.0"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chaingangtech/blockhack.git"
-  },
-  "bugs": {
-    "url": "https://github.com/chaingangtech/blockhack/issues"
-  },
-  "homepage": "https://github.com/chaingangtech/blockhack#readme"
+    "fs": "^0.0.2",
+    "http": "^0.0.0"
+  }
 }
