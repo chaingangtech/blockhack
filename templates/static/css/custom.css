@@ -98,5 +98,5 @@ body {
 .navbar {
     float: right;
     margin-top: 0px;
-    font-family: 'Open Sans';
+    font-family: inherit;
 }
