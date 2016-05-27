@@ -119,20 +119,20 @@ util_funcs.prototype.add_registration = function(entity, func, bBalance) {
 	if(entity == null) arr = this.entities.get_entities() // default - get all the entities of the current set
 	else if(Array.isArray(entity)) arr = entity;
 	else arr = [entity];
-	
+
 	arr.forEach(function (ent) {
 		var entityKey = this.entities.resolve(ent);
 		if(this.registry[entityKey] == null) this.registry[entityKey] = {fTransactions : [], fBalances : []};
 		if(bBalance) this.registry[entityKey].fBalances.push(func);
 		else this.registry[entityKey].fTransactions.push(func);
 	}.bind(this));
-	
+
 }
 
 util_funcs.prototype.prepare_registration = function(entity) {
 	var arr = this.entity_param(entity);
 	var promises = [];
-	
+
 	arr.forEach(function (ent) {
 		var entityKey = this.entities.resolve(ent);
 		if(this.registry[entityKey] == null) this.registry[entityKey] = {fTransactions : [], fBalances : [], sequence : null, rippling : null};
@@ -154,7 +154,7 @@ util_funcs.prototype.prepare_registration = function(entity) {
 	}.bind(this));
 
 	return Promise.all(promises);
-	
+
 }
 
 
@@ -208,7 +208,7 @@ util_funcs.prototype.output_set_details = function(funcOut, entitySet) {
 		arr.push(this.api.getBalances(p));
 		arr.push(this.api.getOrders(p));
 	}, this);
-	
+
 	return Promise.all(arr).then((res) => {
 		arrEnt.forEach((entity,index,arr) => {
 			write_entity(funcOut, entitySet, entity, this.entities, res[index*2], res[index*2+1]);
@@ -483,12 +483,12 @@ util_funcs.prototype.create_trustline = function(fromEntity, toEntity, currency,
 
 
 util_funcs.prototype.create_order = function(makerEntity, direction, baseEntity, baseCurrency, baseAmount, priceEntity, priceCurrency, priceAmount) {
-	
+
 	var makerBase = this.entities.resolveBase(makerEntity);
 	var basePkey, pricePkey
 	if(baseCurrency != "XRP") basePkey = this.entities.resolve(baseEntity);
 	if(priceCurrency != "XRP") pricePkey = this.entities.resolve(priceEntity);
-	
+
 	var rate = Promise.resolve(0);
 
 	var factor = 1.0;
@@ -547,7 +547,7 @@ util_funcs.prototype.update_accountsettings = function(entity, funcSettings) {
 						}.bind(this));
 					return trxn;
 				}
-				else 
+				else
 				{
 					this.log("Trxn Narration", "Info", util.format("Skipped updating account settings for %s", pkey));
 					return Promise.resolve(0);
@@ -699,14 +699,14 @@ function write_orders(funcOut, sSet, entities, orders) {
 }
 
 util_funcs.prototype.write_transaction = function(funcOut, transaction, entity) {
-  
+
   var ret_base = "";
   var amnt = (Number(transaction.specification.destination.amount.value));
   ret_base = util.format("%s Transaction : %s,%s,%s -> %s (%d %s)",entity, transaction.id,transaction.outcome.timestamp,transaction.specification.source.address,transaction.specification.destination.address,amnt,transaction.specification.destination.amount.currency);
   var ret = "";
-  
+
   transaction.outcome.balanceChanges[entity].forEach(function(balanceChange)
-  { 
+  {
     if(balanceChange.currency != "XRP") {
       if(ret.length > 0) ret = ret+"\n";
       ret = ret + ret_base + util.format(",%d %s (%s)", balanceChange.value, balanceChange.currency, balanceChange.counterparty);

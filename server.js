@@ -4,7 +4,8 @@ const path = require('path')
 const Hapi = require('hapi');
 const Vision = require('vision')
 const Inert = require('inert')
-const Ripple = require('./ripple.js')
+const utils = require('./ripple/utils.js')
+var ripple = new utils()
 
 // Create a server with a host and port
 const server = new Hapi.Server();
@@ -159,3 +160,7 @@ server.start((err) => {
     }
     console.log('Server running at:', server.info.uri);
 });
+
+get_project_balances().then(function (balances) {
+  console.log(balances)
+})
