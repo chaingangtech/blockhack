@@ -21,9 +21,9 @@ utils.init()
 	//.then((paths) => {
 	//	console.log(JSON.stringify(paths));
 	//})
-	.then(() => {
-		return utils.purchase_project_source("Inv1", "ZK1", "AUD", 100, 0.9);
-	})
+	//.then(() => {
+	//	return utils.purchase_project_source("Inv1", "ZK1", "AUD", 100, 0.9);
+	//})
 	//.then(() => {
 	//	return utils.purchase_project_dest("Inv1", "ZK1", 2, "AUD", 250);
 	//})

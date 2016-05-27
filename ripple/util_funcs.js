@@ -641,6 +641,7 @@ util_funcs.prototype.make_payment_dest = function(sourceEntity, sourceCurrency, 
 	  }
 	};
 	if(sourceMaxAmount != null) payment.source.maxAmount.value = sourceMaxAmount.toString();
+	console.log(JSON.stringify(payment,null,2))
 	return this.api.preparePayment(sourceBase.public, payment, this.get_trxn_instructions(sourceBase.public))
 		.then(function(prepared) {
 			return this.sign_submit_trxn(prepared, sourceBase.secret, util.format("Executing payment for %s", sDescription));
