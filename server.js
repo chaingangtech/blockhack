@@ -170,36 +170,36 @@ ripple.init()
 })
 
 
-ripple.init()
-.then(() => {
-  ripple.get_investor_balances('Inv1').then(function (balances) {
-    // console.log(balances)
-    console.log(balances)
-    console.log(balances)
-    var i1fb = balances.funds[0].balance
-    var i1fh = balances.investments[0].holding
-    console.log(i1fb)
-    console.log(i1fh)
-  })
-})
-.then(() => {
-  ripple.get_investor_balances('Inv2').then(function (balances) {
-    // console.log(balances)
-    console.log(balances)
-    console.log(balances)
-    var i2fb = balances.funds[0].balance
-    console.log(i2fb)
-  })
-})
-.then(() => {
-  ripple.get_investor_balances('Inv3').then(function (balances) {
-    // console.log(balances)
-    console.log(balances)
-    console.log(balances)
-    var i3fb = balances.funds[0].balance
-    console.log(i3fb)
-  })
-})
+// ripple.init()
+// .then(() => {
+//   ripple.get_investor_balances('Inv1').then(function (balances) {
+//     // console.log(balances)
+//     console.log(balances)
+//     console.log(balances)
+//     var i1fb = balances.funds[0].balance
+//     var i1fh = balances.investments[0].holding
+//     console.log(i1fb)
+//     console.log(i1fh)
+//   })
+// })
+// .then(() => {
+//   ripple.get_investor_balances('Inv2').then(function (balances) {
+//     // console.log(balances)
+//     console.log(balances)
+//     console.log(balances)
+//     var i2fb = balances.funds[0].balance
+//     console.log(i2fb)
+//   })
+// })
+// .then(() => {
+//   ripple.get_investor_balances('Inv3').then(function (balances) {
+//     // console.log(balances)
+//     console.log(balances)
+//     console.log(balances)
+//     var i3fb = balances.funds[0].balance
+//     console.log(i3fb)
+//   })
+// })
 // .then(() => {
 //   ripple.get_project_balances('Res1').then(function (balances) {
 //     console.log(balances)
