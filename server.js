@@ -160,7 +160,3 @@ server.start((err) => {
     }
     console.log('Server running at:', server.info.uri);
 });
-
-get_project_balances().then(function (balances) {
-  console.log(balances)
-})
