@@ -162,20 +162,44 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>BID</th>
-              <th>ASK</th>
               <th>Units</th>
+              <th>Total Price</th>
+              <th>Exchange Rate</th>
             </tr>
           </thead>
           <tbody>
+            {{#each orders.bids}}
             <tr>
-              <td>1</td>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
+              <td>{{@index}}</td>
+              <td>{{units}}</td>
+              <td>AUD$ {{total_price}}</td>
+              <td>{{exchange_rate}}</td>
             </tr>
+            {{/each}}
           </tbody>
         </table>
+        <table>
+          <h4>Current Asks</h4>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Units</th>
+                <th>Total Price</th>
+                <th>Exchange Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each orders.asks}}
+              <tr>
+                <td>{{@index}}</td>
+                <td>{{units}}</td>
+                <td>AUD$ {{total_price}}</td>
+                <td>{{exchange_rate}}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
       </div>
       <div class="col-md-5">
         <h4>Invest in Research</h4>

@@ -102,9 +102,12 @@ server.route({
   method: 'GET',
   path: '/project',
   handler: function (request, reply) {
-    var path = request.url.path.replace(/^\/|\/$/g, '') // remove leading and trailing slashes from the string
-    reply.view('cancerResearch', { title: 'The Invested Researcher | BlockHack 2016',
-    path: path })
+    ripple.get_orders('LCR', 'AUD')
+      .then((orders) => {
+        var path = request.url.path.replace(/^\/|\/$/g, '') // remove leading and trailing slashes from the string
+        reply.view('cancerResearch', { title: 'The Invested Researcher | BlockHack 2016',
+        path: path, orders: orders })
+      });
   }
 });
 
